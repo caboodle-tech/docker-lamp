@@ -18,6 +18,7 @@ Clone this repository on your local computer and run the `docker-compose up -d` 
 git clone https://github.com/caboodle-tech/docker-lamp.git
 cd docker-lamp/
 git fetch --all
+cp sample.env .env
 docker-compose up -d
 ```
 
