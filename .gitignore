@@ -4,4 +4,7 @@
 /data/*
 /logs/*
 /www/**
+!/www/assests/**
+!/www/index.php
+!/www/phpinfo.php
 .DS_Store
