@@ -45,7 +45,6 @@
                                     mysqli_close($link);
                                     ?>
                                 </li>
-                                <li>Redis <?php echo phpversion('redis') ?></li>
                             </ul>
                             <?php
                                 $remakeHtaccess = true;

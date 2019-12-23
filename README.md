@@ -4,10 +4,9 @@ This repo is a modified version of [sprintcube's](https://github.com/sprintcube)
 
 This is a basic LAMP stack environment built using Docker Compose. It consists of the following:
 
-* PHP 7.3.x
+* PHP 7.4.1
 * Apache 2.4.x
 * MySQL 8.0.18
-* Redis 4.0.1
 * phpMyAdmin
 
 ## Installation
@@ -90,17 +89,18 @@ The installed version of PHP is 7.3.x
 
 By default following extensions are installed.
 
-* mysqli
-* mbstring
-* zip
-* intl
-* mcrypt
 * curl
-* json
+* gd
 * iconv
+* intl
+* json
+* mbstring
+* mcrypt
+* mysqli
+* webp
 * xml
 * xmlrpc
-* gd
+* zip
 
 > If you want to install more extension, just update `./bin/webserver/Dockerfile`.
 > You have to rebuild the docker image by running `docker-compose build` and restart the docker containers.
@@ -114,7 +114,3 @@ username: root
 password: lamp
 
 **NOTE:** On the first run of your local copy you should login to phpMyAdmin as root and complete the installation of the PMA tables. There will be a prompt in a message box on the bottom of the dashboard. Click this and follow the steps.
-
-## Redis
-
-It comes with Redis. It runs on default port `6379`.
