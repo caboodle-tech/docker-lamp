@@ -1,10 +1,10 @@
 # LAMP stack built with Docker Compose
 
-This repo is a modified version of [sprintcube's](https://github.com/sprintcube) [docker-compose-lamp repo](https://github.com/sprintcube/docker-compose-lamp). It has been slimed down slightly and configured for development work at Caboodle Tech Inc.
+This repo is a modified version of [sprintcube's](https://github.com/sprintcube) [docker-compose-lamp repo](https://github.com/sprintcube/docker-compose-lamp). It has been slimed down slightly and configured for development work at Caboodle Tech Inc. Changes to PHP and Apache where heavily inspired by [Chialab's](https://github.com/chialab) [docker-php/7.4 repo](https://github.com/chialab/docker-php/tree/master/7.4/apache).
 
 This is a basic LAMP stack environment built using Docker Compose. It consists of the following:
 
-* PHP 7.3.13
+* PHP 7.4.1
    * GD with WebP support enabled
    * ImageMagick enabled
 * Apache 2.4.x
