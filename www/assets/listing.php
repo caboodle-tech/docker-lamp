@@ -1,6 +1,11 @@
 <?php
 $toggle = strip_tags( $_POST['toggle'] );
-$htaccess = file_get_contents('../.htaccess');
+
+if( !file_exists( '../.htaccess' ) ){
+    file_put_contents( '../.htaccess', '' );
+}
+
+$htaccess = file_get_contents( '../.htaccess' );
 
 if ( $htaccess == false ) {
     $htaccess = '';

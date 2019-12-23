@@ -95,9 +95,9 @@ error_reporting( 0 );
                                     <br>
                                     Docker user = docker / docker
                                 </li>
-                                <li><a href="http://localhost/phpinfo.php" target="_blank">phpinfo()</a></li>
-                                <li><a href="http://localhost/gd-test.php" target="_blank">gd extension &check;</a></li>
-                                <li><a href="http://localhost/webp-test.php" target="_blank">webp support &check;</a></li>
+                                <li><a href="http://localhost/assets/phpinfo.php" target="_blank">phpinfo()</a></li>
+                                <li><a href="http://localhost/assets/gd-test.php" target="_blank">gd extension &check;</a></li>
+                                <li><a href="http://localhost/assets/webp-test.php" target="_blank">webp support &check;</a></li>
                             </ul>
                         </div>
                     </div>
@@ -107,7 +107,7 @@ error_reporting( 0 );
                         <div class="content">
                             <ul>
                             <?php
-                                $ignore = [ '.', '..', 'assets', 'index.php', 'phpinfo.php', 'gd-test.php', 'webp-test.php' ];
+                                $ignore = [ '.', '..', 'assets', 'index.php' ];
                                 $files = [];
                                 $dirs = scandir('.');
                                 foreach( $dirs as $dir ){
