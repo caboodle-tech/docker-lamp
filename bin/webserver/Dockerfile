@@ -44,7 +44,7 @@ RUN apt-get -y update && \
     rm -rf /var/lib/apt/lists/* && \
     docker-php-ext-configure gd \
         --enable-gd-native-ttf \
-        --with-jpeg-dir=/usr/include/
+        --with-jpeg-dir=/usr/include/ \
         --with-webp-dir=/usr/include \
         --with-freetype-dir=/usr/include/ && \
     docker-php-ext-install -j$(nproc) gd
