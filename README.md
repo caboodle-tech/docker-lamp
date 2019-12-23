@@ -1,10 +1,12 @@
 # LAMP stack built with Docker Compose
 
-This repo is a modified version of [sprintcube's](https://github.com/sprintcube) [docker-compose-lamp repo](https://github.com/sprintcube/docker-compose-lamp). It has been slimed down slightly with the removal of support for extra databases and configured for development work at Caboodle Tech Inc.
+This repo is a modified version of [sprintcube's](https://github.com/sprintcube) [docker-compose-lamp repo](https://github.com/sprintcube/docker-compose-lamp). It has been slimed down slightly and configured for development work at Caboodle Tech Inc.
 
 This is a basic LAMP stack environment built using Docker Compose. It consists of the following:
 
-* PHP 7.4.1
+* PHP 7.3.13
+   * GD with WebP support enabled
+   * ImageMagick enabled
 * Apache 2.4.x
 * MySQL 8.0.18
 * phpMyAdmin
@@ -18,6 +20,7 @@ git clone https://github.com/caboodle-tech/docker-lamp.git
 cd docker-lamp/
 git fetch --all
 cp sample.env .env
+docker-compose build --no-cache --pull
 docker-compose up -d
 ```
 

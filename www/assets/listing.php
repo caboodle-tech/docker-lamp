@@ -2,7 +2,11 @@
 $toggle = strip_tags( $_POST['toggle'] );
 $htaccess = file_get_contents('../.htaccess');
 
-if( $toggle == 'on' ){
+if ( $htaccess == false ) {
+    $htaccess = '';
+}
+
+if ( $toggle == 'on' ) {
     if( strpos( $htaccess, 'Options +Indexes' ) === false ){
         file_put_contents( '../.htaccess', $htaccess . PHP_EOL . '# Auto-added by docker-lamp' .PHP_EOL . 'Options +Indexes' );
     }

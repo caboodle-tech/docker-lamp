@@ -87,11 +87,13 @@
                                 <li>
                                     <a href="http://localhost:8080" target="_blank">phpMyAdmin</a>
                                     <br>
-                                    Root user: root / lamp
+                                    Root user = root / lamp
                                     <br>
-                                    Docker user: docker / docker
+                                    Docker user = docker / docker
                                 </li>
                                 <li><a href="http://localhost/phpinfo.php" target="_blank">phpinfo()</a></li>
+                                <li><a href="http://localhost/gd-test.php" target="_blank">gd extension &check;</a></li>
+                                <li><a href="http://localhost/webp-test.php" target="_blank">webp support &check;</a></li>
                             </ul>
                         </div>
                     </div>
@@ -101,7 +103,7 @@
                         <div class="content">
                             <ul>
                             <?php
-                                $ignore = [ '.', '..', 'assets', 'index.php', 'phpinfo.php' ];
+                                $ignore = [ '.', '..', 'assets', 'index.php', 'phpinfo.php', 'gd-test.php', 'webp-test.php' ];
                                 $files = [];
                                 $dirs = scandir('.');
                                 foreach( $dirs as $dir ){
