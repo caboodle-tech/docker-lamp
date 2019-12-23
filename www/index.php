@@ -1,3 +1,7 @@
+<?php
+// Don't print errors, we account for them on this page already
+error_reporting( 0 );
+?>
 <!DOCTYPE html>
 <html>
     <head>
