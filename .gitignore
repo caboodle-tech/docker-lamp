@@ -3,6 +3,6 @@
 /config/*
 /data/*
 /logs/*
-/www/**
-/www/.htaccess
+!/www/
+!/www/assets
 .DS_Store
