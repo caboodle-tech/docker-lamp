@@ -24,7 +24,7 @@ docker-compose build --no-cache --pull
 docker-compose up -d
 ```
 
-Your LAMP stack is now ready! You can access it via `http://localhost`.**\****
+Your LAMP stack is now ready! You can access it via `http://localhost`.**\***
 
 **\*LINUX:** If your on a linux / unix operating system you will need to open the projects root directory and run the following commands to fix file permission issues. These commands assume you setup docker correctly by adding your user to the `docker` group and that your host machine has the `www-data` group with an id of 33 (common default):
 
