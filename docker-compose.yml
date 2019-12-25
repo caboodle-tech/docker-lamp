@@ -1,7 +1,7 @@
 version: '3'
 services:
     webserver:
-        image: php:7.3.13-apache
+        image: php:7.4.1-apache
         build:
             context: ./bin/webserver
         container_name: 'dev-server'
