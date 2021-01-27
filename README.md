@@ -128,3 +128,4 @@ username: root
 password: lamp
 
 **NOTE:** On the first run of your local copy you should login to phpMyAdmin as root and complete the installation of the PMA tables. There will be a prompt in a message box on the bottom of the dashboard. Click this and follow the steps.
+
