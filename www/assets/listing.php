@@ -1,26 +1,41 @@
 <?php
-$toggle = strip_tags( $_POST['toggle'] );
+$toggle = strip_tags($_POST['toggle']);
+$htaccessFile = '../.htaccess';
+$marker = '# Auto-added by docker-lamp';
+$directive = 'Options +Indexes';
 
-if( !file_exists( '../.htaccess' ) ){
-    file_put_contents( '../.htaccess', '' );
+// Ensure the .htaccess file exists
+if (!file_exists($htaccessFile)) {
+    if (!file_put_contents($htaccessFile, '')) {
+        die('Error: Unable to create .htaccess file.');
+    }
 }
 
-$htaccess = file_get_contents( '../.htaccess' );
-
-if ( $htaccess == false ) {
-    $htaccess = '';
+// Read the .htaccess file content
+$htaccess = file_get_contents($htaccessFile);
+if ($htaccess === false) {
+    die('Error: Unable to read .htaccess file.');
 }
 
-if ( $toggle == 'on' ) {
-    if( strpos( $htaccess, 'Options +Indexes' ) === false ){
-        file_put_contents( '../.htaccess', $htaccess . PHP_EOL . '# Auto-added by docker-lamp' .PHP_EOL . 'Options +Indexes' );
+// Handle the toggle action
+if ($toggle === 'on') {
+    // Add the directive only if it's not already present
+    if (strpos($htaccess, $directive) === false) {
+        $newContent = $htaccess . PHP_EOL . $marker . PHP_EOL . $directive . PHP_EOL;
+        if (!file_put_contents($htaccessFile, $newContent)) {
+            die('Error: Unable to update .htaccess file.');
+        }
     }
 } else {
-    $htaccess = str_replace( '# Auto-added by docker-lamp', '', $htaccess );
-    $htaccess = str_replace( 'Options +Indexes', '', $htaccess );
-    $htaccess = trim( $htaccess );
-    file_put_contents( '../.htaccess', $htaccess );
+    // Remove the directive and the marker if they exist
+    $htaccess = str_replace([$marker, $directive], '', $htaccess);
+    $htaccess = trim($htaccess);
+
+    if (!file_put_contents($htaccessFile, $htaccess)) {
+        die('Error: Unable to update .htaccess file.');
+    }
 }
 
-header( 'Location: ../index.php' );
-?>
+// Redirect back to the index page
+header('Location: ../index.php');
+exit;

@@ -4,12 +4,20 @@ This repo is a modified version of [sprintcube's](https://github.com/sprintcube)
 
 This is a basic LAMP stack environment built using Docker Compose. It consists of the following:
 
-* PHP 7.4.1
-   * GD with WebP support enabled
-   * ImageMagick enabled
+* PHP 8.3
+   * GD with WebP, JPEG, and Freetype support enabled
+   * ImageMagick with custom build for PHP 8.3 compatibility
+   * Xdebug 3.x for debugging
+   * Redis extension enabled. If you want Redis you will need to add all the other configurations from sprintcube's [docker-compose-lamp repo](https://github.com/sprintcube/docker-compose-lamp)
 * Apache 2.4.x
-* MySQL 8.0.18
+   * SSL support enabled
+   * Customizable `DocumentRoot` via environment variables
+* MySQL 8.x
+   * Configurable initialization scripts and data directories
+   * Compatible with `mysql_native_password` authentication for legacy support
 * phpMyAdmin
+   * Accessible via configured ports (default `8080` for HTTP, `8443` for HTTPS)
+   * Custom upload and memory limits
 
 ## Installation
 
@@ -20,8 +28,8 @@ git clone https://github.com/caboodle-tech/docker-lamp.git
 cd docker-lamp/
 git fetch --all
 cp sample.env .env
-docker-compose build --no-cache --pull
-docker-compose up -d
+docker compose build --pull --no-cache
+docker compose up -d
 ```
 
 Your LAMP stack is now ready! You can access it via `http://localhost`.**\***
@@ -97,7 +105,7 @@ The configuration variables for the MySQL database can be customized by overwrit
 
 ## PHP
 
-The installed version of PHP is 7.3.x
+The installed version of PHP is 8.3.x
 
 #### Extensions
 

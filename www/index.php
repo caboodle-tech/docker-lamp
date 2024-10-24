@@ -1,6 +1,11 @@
 <?php
 // Don't print errors, we account for them on this page already
 error_reporting( 0 );
+
+// Check if the server name is set, if not default to localhost
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+$serverName = $_SERVER['SERVER_NAME'] ?: 'localhost';
+$port = $_ENV['PMA_PORT'] ?: '8080';
 ?>
 <!DOCTYPE html>
 <html>
@@ -40,7 +45,7 @@ error_reporting( 0 );
                                     // Check database connection
                                     $link = mysqli_connect( "mysql", "root", "lamp", null );
                                     if ( mysqli_connect_errno() ){
-                                        echo '<span style="color:red;">Could not connect to the database with the root user. There may be a problem with MySQL. If this is your first time running this image go to <a href="http://localhost:8080" target="_blank">phpMyAdmin</a> and login as root manually.</span>';
+                                        echo '<span style="color:red;">Could not connect to the database with the root user. There may be a problem with MySQL. If this is your first time running this image go to <a href="' . $protocol . $serverName . ':' . $port . '" target="_blank">phpMyAdmin</a> and login as root manually.</span>';
                                     } else {
                                         // Print MySQL server version
                                         printf( "MySQL Server %s", mysqli_get_server_info( $link ) );
@@ -89,15 +94,15 @@ error_reporting( 0 );
                         <div class="content">
                             <ul>
                                 <li>
-                                    <a href="http://localhost:8080" target="_blank">phpMyAdmin</a>
+                                    <a href="<?php echo $protocol . $serverName . ':' . $port; ?>" target="_blank">phpMyAdmin</a>
                                     <br>
                                     Root user = root / lamp
                                     <br>
                                     Docker user = docker / docker
                                 </li>
-                                <li><a href="http://localhost/assets/phpinfo.php" target="_blank">phpinfo()</a></li>
-                                <li><a href="http://localhost/assets/gd-test.php" target="_blank">gd extension &check;</a></li>
-                                <li><a href="http://localhost/assets/webp-test.php" target="_blank">webp support &check;</a></li>
+                                <li><a href="/assets/phpinfo.php" target="_blank">phpinfo()</a></li>
+                                <li><a href="/assets/gd-test.php" target="_blank">gd extension &check;</a></li>
+                                <li><a href="/assets/webp-test.php" target="_blank">webp support &check;</a></li>
                             </ul>
                         </div>
                     </div>

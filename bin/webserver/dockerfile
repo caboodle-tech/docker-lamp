@@ -1,78 +1,78 @@
-FROM php:7.4.1-apache
+FROM php:8.3-apache-bookworm
 
-# Update system
-RUN apt-get -qq -y update --fix-missing && \
-    apt-get -y upgrade
+# Suppress debconf complaints of trying to install apt packages interactively
+ARG DEBIAN_FRONTEND=noninteractive
 
-# Pre-install things that tend to fail
-RUN apt-get -y install pkg-config && \
-    apt-get -y install apt-utils && \
-    apt-get -y install build-essential && \
-    apt-get -y install git && \
-    apt-get -y install curl && \
-    apt-get -y install nano && \
-    apt-get -y install net-tools && \
-    apt-get -y install autoconf && \
-    apt-get -y install zip
+# Update and install base dependencies
+RUN apt-get -y update --fix-missing && \
+    apt-get upgrade -y && \
+    apt-get --no-install-recommends install -y apt-utils && \
+    rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions and PECL modules.
-# Modified from: https://github.com/chialab/docker-php/tree/master/7.4
-RUN buildDeps=" \
-        default-libmysqlclient-dev \
-        libbz2-dev \
-        libmemcached-dev \
-        libsasl2-dev \
-        libcurl4-openssl-dev \
-        libjpeg-dev \
-        libpng-dev \
-        libwebp-dev \
-        libfreetype6-dev \
-        libsqlite3-dev \
-    " \
-    runtimeDeps=" \
-        curl \
-        git \
-        libfreetype6-dev \
-        libicu-dev \
-        libjpeg-dev \
-        libldap2-dev \
-        libmemcachedutil2 \
-        libpng-dev \
-        libpq-dev \
-        libxml2-dev \
-        libzip-dev \
+# Install useful tools and required libraries
+RUN apt-get -y update && \
+    apt-get -y --no-install-recommends install \
+        nano wget dialog \
+        libsqlite3-dev libsqlite3-0 \
+        default-mysql-client \
+        zlib1g-dev libzip-dev libicu-dev \
+        build-essential git curl \
         libonig-dev \
-    " \
-    && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y $buildDeps $runtimeDeps \
-    && docker-php-ext-install bcmath bz2 calendar iconv intl mbstring mysqli opcache pdo_mysql pdo_pgsql pdo_sqlite pgsql soap curl tokenizer json gettext zip \
-    && docker-php-ext-configure gd --with-freetype --with-webp --with-jpeg \
-    && docker-php-ext-install gd \
-    && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
-    && docker-php-ext-install ldap \
-    && docker-php-ext-install exif \
-    && pecl install memcached redis \
-    && docker-php-ext-enable memcached.so redis.so \
-    && apt-get install -y libmagickwand-dev imagemagick \
-    && pecl install imagick \
-    && docker-php-ext-enable imagick \
-    && apt-get purge -y --auto-remove $buildDeps \
-    && rm -r /var/lib/apt/lists/*
+        libcurl4 libcurl4-openssl-dev \
+        zip openssl \
+        autoconf \
+        libbz2-dev \
+        libwebp-dev \
+        libldap2-dev \
+        net-tools \
+        && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && ln -s $(composer config --global home) /root/composer
-ENV PATH=$PATH:/root/composer/vendor/bin COMPOSER_ALLOW_SUPERUSER=1
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install XDebug
-RUN pecl install xdebug \
-    && echo "zend_extension=\"$(php-config --extension-dir)/xdebug.so\"" > $PHP_INI_DIR/conf.d/xdebug.ini
+RUN pecl install xdebug-3.3.1 && \
+    docker-php-ext-enable xdebug && \
+    mkdir /var/log/xdebug
 
-# Enable apache modules
-RUN a2enmod rewrite headers
+# Install Redis
+RUN pecl install redis-6.0.2 && \
+    docker-php-ext-enable redis
 
-# Correct file ownership
-RUN chown -R www-data:www-data /var/www/html
+# Install Imagick
+RUN apt-get update && \
+    apt-get -y --no-install-recommends install --fix-missing libmagickwand-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+# Imagick Commit to install for PHP 8.3 compatibility
+ARG IMAGICK_COMMIT="28f27044e435a2b203e32675e942eb8de620ee58"
+RUN cd /usr/local/src && \
+    git clone https://github.com/Imagick/imagick && \
+    cd imagick && \
+    git checkout ${IMAGICK_COMMIT} && \
+    phpize && \
+    ./configure && \
+    make && \
+    make install && \
+    cd .. && \
+    rm -rf imagick && \
+    docker-php-ext-enable imagick
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql pdo_sqlite bcmath mysqli curl zip intl mbstring gettext calendar exif
+
+# Install GD with support for various image formats
+RUN apt-get -y update && \
+    apt-get --no-install-recommends install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev && \
+    rm -rf /var/lib/apt/lists/* && \
+    docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp && \
+    docker-php-ext-install gd
+
+# Ensure an SSL directory exists for Apache
+RUN mkdir -p /etc/apache2/ssl
+
+# Enable SSL and other Apache modules
+RUN a2enmod ssl && a2enmod rewrite headers
 
 # Cleanup
-RUN rm -rf /usr/src/* && \
-    rm -rf /var/lib/apt/lists/*
+RUN rm -rf /usr/src/*

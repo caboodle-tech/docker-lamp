@@ -1,28 +1,27 @@
-var Listing = (function(){
+const Listing = (() => {
 
-    var toggle = function( type ){
-        var form = document.createElement('FORM');
+    const toggle = (type) => {
+        const form = document.createElement('form');
         form.style.display = 'none';
         form.method = 'POST';
         form.action = 'assets/listing.php';
 
-        var input = document.createElement('INPUT');
+        const input = document.createElement('input');
         input.type = 'text';
         input.name = 'toggle';
         input.value = type;
 
-        form.appendChild( input );
-        document.body.appendChild( form );
+        form.appendChild(input);
+        document.body.appendChild(form);
 
         // Let the toggle finish
-        setTimeout( function(){
+        setTimeout(() => {
             form.submit();
-        }, 300 );
-
+        }, 300);
     };
 
     return {
-        'toggle': toggle
+        toggle
     };
 
 })();
